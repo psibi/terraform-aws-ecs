@@ -821,12 +821,12 @@ data "aws_iam_policy_document" "task_exec" {
   }
 
   dynamic "statement" {
-    for_each = var.task_exec_secret_arns
+    for_each = length(var.task_exec_secret_arns) > 0 ? [length(var.task_exec_secret_arns)] : []
 
     content {
       sid       = "GetSecrets"
       actions   = ["secretsmanager:GetSecretValue"]
-      resources = statement.value
+      resources = var.task_exec_secret_arns
     }
   }
 
